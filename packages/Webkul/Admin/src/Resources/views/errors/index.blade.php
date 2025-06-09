@@ -9,17 +9,17 @@
         <div class="flex max-w-[745px] items-center gap-5">
             <div class="w-full">
                 @php
-                    $logoUrl = core()->getConfigData('general.design.admin_logo.logo_image') 
-                                ? Storage::url(core()->getConfigData('general.design.admin_logo.logo_image')) 
+                    $logoUrl = core()->getConfigData('general.design.admin_logo.logo_image')
+                                ? Storage::url(core()->getConfigData('general.design.admin_logo.logo_image'))
                                 : bagisto_asset('images/logo.svg');
                 @endphp
 
-                <img
-                    class="mb-6 h-10"
-                    src="{{ $logoUrl }}"
-                    id="logo-image"
-                    alt="{{ config('app.name') }}"
-                />
+{{--                <img--}}
+{{--                    class="mb-6 h-10"--}}
+{{--                    src="{{ $logoUrl }}"--}}
+{{--                    id="logo-image"--}}
+{{--                    alt="{{ config('app.name') }}"--}}
+{{--                />--}}
 
 				<div class="text-[38px] font-bold text-gray-800 dark:text-white">
                     {{ $errorCode }}

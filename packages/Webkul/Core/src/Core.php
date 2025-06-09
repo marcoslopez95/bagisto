@@ -166,7 +166,7 @@ class Core
      *
      * @return \Webkul\Core\Contracts\Channel
      */
-    public function getCurrentChannelCode(): string
+    public function getCurrentChannelCode(): ?string
     {
         return $this->getCurrentChannel()?->code;
     }
@@ -202,7 +202,7 @@ class Core
     /**
      * Returns the default channel code configured in `config/app.php`.
      */
-    public function getDefaultChannelCode(): string
+    public function getDefaultChannelCode(): ?string
     {
         return $this->getDefaultChannel()?->code;
     }
@@ -273,12 +273,12 @@ class Core
      */
     public function getCurrentLocale()
     {
+
         if ($this->currentLocale) {
             return $this->currentLocale;
         }
 
         $this->currentLocale = $this->localeRepository->findOneByField('code', app()->getLocale());
-
         if (! $this->currentLocale) {
             $this->currentLocale = $this->localeRepository->findOneByField('code', config('app.fallback_locale'));
         }
