@@ -1,5 +1,12 @@
 <?php
 
-\Illuminate\Support\Facades\Route::get('phpinfo',function(){
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
+
+Route::get('optimize-clear',function(){
+    Artisan::command('optimize-clear');
+    return 'limpiado';
+});
+Route::get('phpinfo',function(){
     return phpinfo();
 });
