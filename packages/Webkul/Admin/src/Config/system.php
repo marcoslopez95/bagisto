@@ -1996,6 +1996,111 @@ return [
             ],
         ],
     ], [
+        'key'    => 'sales.payment_methods.pagomovil',
+        'name'   => 'Pago Movil',
+        'info'   => '',
+        'sort'   => 5,
+        'fields' => [
+            [
+                'name'          => 'title',
+                'title'         => 'admin::app.configuration.index.sales.payment-methods.title',
+                'type'          => 'text',
+                'depends'       => 'active:1',
+                'validation'    => 'required_if:active,1',
+                'channel_based' => true,
+                'locale_based'  => true,
+            ], [
+                'name'          => 'description',
+                'title'         => 'admin::app.configuration.index.sales.payment-methods.description',
+                'type'          => 'textarea',
+                'channel_based' => true,
+                'locale_based'  => true,
+            ], [
+                'name'          => 'image',
+                'title'         => 'admin::app.configuration.index.sales.payment-methods.logo',
+                'type'          => 'image',
+                'info'          => 'admin::app.configuration.index.sales.payment-methods.logo-information',
+                'channel_based' => false,
+                'locale_based'  => false,
+                'validation'    => 'mimes:bmp,jpeg,jpg,png,webp',
+            ], [
+                'name'          => 'generate_invoice',
+                'title'         => 'admin::app.configuration.index.sales.payment-methods.generate-invoice',
+                'type'          => 'boolean',
+                'default_value' => false,
+                'channel_based' => true,
+                'locale_based'  => false,
+            ], [
+                'name'       => 'invoice_status',
+                'depends'    => 'generate_invoice:1',
+                'validation' => 'required_if:generate_invoice,1',
+                'title'      => 'admin::app.configuration.index.sales.payment-methods.set-invoice-status',
+                'type'       => 'select',
+                'options'    => [
+                    [
+                        'title' => 'admin::app.configuration.index.sales.payment-methods.pending',
+                        'value' => 'pending',
+                    ], [
+                        'title' => 'admin::app.configuration.index.sales.payment-methods.paid',
+                        'value' => 'paid',
+                    ],
+                ],
+                'info'          => 'admin::app.configuration.index.sales.payment-methods.generate-invoice-applicable',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ], [
+                'name'    => 'order_status',
+                'title'   => 'admin::app.configuration.index.sales.payment-methods.set-order-status',
+                'type'    => 'select',
+                'options' => [
+                    [
+                        'title' => 'admin::app.configuration.index.sales.payment-methods.pending',
+                        'value' => 'pending',
+                    ], [
+                        'title' => 'admin::app.configuration.index.sales.payment-methods.pending-payment',
+                        'value' => 'pending_payment',
+                    ], [
+                        'title' => 'admin::app.configuration.index.sales.payment-methods.processing',
+                        'value' => 'processing',
+                    ],
+                ],
+                'info'          => 'admin::app.configuration.index.sales.payment-methods.generate-invoice-applicable',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ], [
+                'name'          => 'mailing_address',
+                'title'         => 'admin::app.configuration.index.sales.payment-methods.mailing-address',
+                'type'          => 'textarea',
+                'channel_based' => true,
+                'locale_based'  => true,
+            ], [
+                'name'          => 'active',
+                'title'         => 'admin::app.configuration.index.sales.payment-methods.status',
+                'type'          => 'boolean',
+                'channel_based' => true,
+                'locale_based'  => false,
+            ], [
+                'name'    => 'sort',
+                'title'   => 'admin::app.configuration.index.sales.payment-methods.sort-order',
+                'type'    => 'select',
+                'options' => [
+                    [
+                        'title' => '1',
+                        'value' => 1,
+                    ], [
+                        'title' => '2',
+                        'value' => 2,
+                    ], [
+                        'title' => '3',
+                        'value' => 3,
+                    ], [
+                        'title' => '4',
+                        'value' => 4,
+                    ],
+                ],
+            ],
+        ],
+    ], [
         'key'    => 'sales.payment_methods.paypal_standard',
         'name'   => 'admin::app.configuration.index.sales.payment-methods.paypal-standard',
         'info'   => 'admin::app.configuration.index.sales.payment-methods.paypal-standard-info',

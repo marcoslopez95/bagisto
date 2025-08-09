@@ -18,4 +18,13 @@ return [
         'active'      => true,
         'sort'        => 2,
     ],
+
+    'pagomovil'   => [
+        'code'        => 'pagomovil',
+        'title'       => 'Pago Movil',
+        'description' => 'Pago Movil',
+        'class'       => 'Webkul\Payment\Payment\PagoMovil',
+        'active'      => true,
+        'sort'        => 3,
+    ],
 ];

@@ -119,6 +119,28 @@
                             </template>
 
                             <template v-else>
+                                <!-- Pago Movil extra fields on review step -->
+                                <div v-if="cart.payment_method == 'pagomovil'" class="mr-4 max-w-full">
+                                    <div class="mb-2">
+                                        <label class="block text-sm font-semibold mb-1">Referencia de pago</label>
+                                        <input
+                                            type="text"
+                                            v-model="pagomovil.reference"
+                                            placeholder="Ingresa la referencia"
+                                            class="w-full rounded border border-zinc-300 px-3 py-2 text-sm"
+                                        />
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="block text-sm font-semibold mb-1">Captura (imagen del pago)</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            @change="onPagoMovilFileChange"
+                                            class="w-full text-sm"
+                                        />
+                                    </div>
+                                </div>
+
                                 <x-shop::button
                                     type="button"
                                     class="primary-button w-max rounded-2xl bg-navyBlue px-11 py-3 max-md:mb-4 max-md:w-full max-md:max-w-full max-md:rounded-lg max-sm:py-1.5"
@@ -142,11 +164,16 @@
                     return {
                         cart: null,
 
+                        pagomovil: {
+                            reference: '',
+                            capture: null,
+                        },
+
                         displayTax: {
                             prices: "{{ core()->getConfigData('sales.taxes.shopping_cart.display_prices') }}",
 
                             subtotal: "{{ core()->getConfigData('sales.taxes.shopping_cart.display_subtotal') }}",
-                            
+
                             shipping: "{{ core()->getConfigData('sales.taxes.shopping_cart.display_shipping_amount') }}",
                         },
 
@@ -167,6 +194,10 @@
                 },
 
                 methods: {
+                    onPagoMovilFileChange(event) {
+                        const files = event?.target?.files;
+                        this.pagomovil.capture = files && files.length ? files[0] : null;
+                    },
                     getCart() {
                         this.$axios.get("{{ route('shop.checkout.onepage.summary') }}")
                             .then(response => {
@@ -221,7 +252,27 @@
                     placeOrder() {
                         this.isPlacingOrder = true;
 
-                        this.$axios.post('{{ route('shop.checkout.onepage.orders.store') }}')
+                        // Build payload. For Pago Movil, send FormData with reference and capture.
+                        let config = {};
+                        let payload = null;
+
+                        if (this.cart?.payment_method === 'pagomovil') {
+                            const form = new FormData();
+                            if (this.pagomovil?.reference) {
+                                form.append('orderData[reference]', this.pagomovil.reference);
+                            }
+                            if (this.pagomovil?.capture) {
+                                form.append('orderData[capture]', this.pagomovil.capture);
+                            }
+
+                            payload = form;
+
+                            config.headers = { 'Content-Type': 'multipart/form-data' };
+                        } else {
+                            payload = {};
+                        }
+
+                        this.$axios.post('{{ route('shop.checkout.onepage.orders.store') }}', payload, config)
                             .then(response => {
                                 if (response.data.data.redirect) {
                                     window.location.href = response.data.data.redirect_url;
@@ -234,7 +285,8 @@
                             .catch(error => {
                                 this.isPlacingOrder = false
 
-                                this.$emitter.emit('add-flash', { type: 'error', message: error.response.data.message });
+                                const message = error?.response?.data?.message || 'Error al procesar el pedido.';
+                                this.$emitter.emit('add-flash', { type: 'error', message });
                             });
                     }
                 },

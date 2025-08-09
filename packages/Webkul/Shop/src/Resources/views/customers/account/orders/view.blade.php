@@ -2155,6 +2155,21 @@
                                 </div>
                             @endif
 
+                            @php $paymentAdditional = $order->payment->additional ?? []; @endphp
+                            @if ($order->payment->method === 'pagomovil' && ! empty($paymentAdditional))
+                                <div class="mt-2">
+                                    @if (! empty($paymentAdditional['reference']))
+                                        <p class="font-semibold">Referencia de pago</p>
+                                        <p class="text-zinc-600">{{ $paymentAdditional['reference'] }}</p>
+                                    @endif
+
+                                    @if (! empty($paymentAdditional['capture']))
+                                        <p class="mt-2 font-semibold">Captura del pago</p>
+                                        <a href="{{ Storage::url($paymentAdditional['capture']) }}" target="_blank" class="text-blue-600 hover:underline">Ver imagen</a>
+                                    @endif
+                                </div>
+                            @endif
+
                             {!! view_render_event('bagisto.shop.customers.account.orders.view.payment_method_details.after', ['order' => $order]) !!}
 
                         </div>
@@ -2234,6 +2249,21 @@
                     @if (! empty($additionalDetails))
                         <div class="instructions">
                             <label>{{ $additionalDetails['title'] }}</label>
+                        </div>
+                    @endif
+
+                    @php $paymentAdditional = $order->payment->additional ?? []; @endphp
+                    @if ($order->payment->method === 'pagomovil' && ! empty($paymentAdditional))
+                        <div class="mt-2">
+                            @if (! empty($paymentAdditional['reference']))
+                                <p class="font-semibold">Referencia de pago</p>
+                                <p class="text-zinc-600">{{ $paymentAdditional['reference'] }}</p>
+                            @endif
+
+                            @if (! empty($paymentAdditional['capture']))
+                                <p class="mt-2 font-semibold">Captura del pago</p>
+                                <a href="{{ Storage::url($paymentAdditional['capture']) }}" target="_blank" class="text-blue-600 hover:underline">Ver imagen</a>
+                            @endif
                         </div>
                     @endif
 

@@ -172,6 +172,14 @@ class OnepageController extends APIController
             ]);
         }
 
+        // Extra validation for Pago Movil: require reference and validate capture file when chosen
+        if ($cart->payment?->method === 'pagomovil') {
+            $this->validate(request(), [
+                'orderData.reference' => 'required|string|max:255',
+                'orderData.capture'   => 'nullable|image|mimes:bmp,jpeg,jpg,png,webp|max:5120',
+            ]);
+        }
+
         $data = (new OrderResource($cart))->jsonSerialize();
 
         $order = $this->orderRepository->create($data);
