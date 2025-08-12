@@ -119,8 +119,8 @@
                             </template>
 
                             <template v-else>
-                                <!-- Pago Movil extra fields on review step -->
-                                <div v-if="cart.payment_method == 'pagomovil'" class="mr-4 max-w-full">
+                                <!-- Pago Movil & Similar methods extra fields on review step -->
+                                <div v-if="['pagomovil','binance','zelle','zinli'].includes(cart.payment_method)" class="mr-4 max-w-full">
                                     <div class="mb-2">
                                         <label class="block text-sm font-semibold mb-1">Referencia de pago</label>
                                         <input
@@ -252,11 +252,11 @@
                     placeOrder() {
                         this.isPlacingOrder = true;
 
-                        // Build payload. For Pago Movil, send FormData with reference and capture.
+                        // Build payload. For Pago Movil-like methods, send FormData with reference and capture.
                         let config = {};
                         let payload = null;
 
-                        if (this.cart?.payment_method === 'pagomovil') {
+                        if (['pagomovil','binance','zelle','zinli'].includes(this.cart?.payment_method)) {
                             const form = new FormData();
                             if (this.pagomovil?.reference) {
                                 form.append('orderData[reference]', this.pagomovil.reference);

@@ -172,8 +172,8 @@ class OnepageController extends APIController
             ]);
         }
 
-        // Extra validation for Pago Movil: require reference and validate capture file when chosen
-        if ($cart->payment?->method === 'pagomovil') {
+        // Extra validation for Pago Movil-like methods: require reference and validate capture file when chosen
+        if (in_array($cart->payment?->method, ['pagomovil','binance','zelle','zinli'])) {
             $this->validate(request(), [
                 'orderData.reference' => 'required|string|max:255',
                 'orderData.capture'   => 'nullable|image|mimes:bmp,jpeg,jpg,png,webp|max:5120',

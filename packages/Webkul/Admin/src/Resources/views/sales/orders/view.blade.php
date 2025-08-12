@@ -722,7 +722,7 @@
 
                             @php $paymentAdditional = $order->payment->additional ?? []; @endphp
 
-                            @if ($order->payment->method === 'pagomovil' && ! empty($paymentAdditional))
+                            @if (in_array($order->payment->method, ['pagomovil','binance','zelle','zinli']) && ! empty($paymentAdditional))
                                 <div class="mt-4">
                                     @if (! empty($paymentAdditional['reference']))
                                         <p class="font-semibold text-gray-800 dark:text-white">Referencia de pago</p>
